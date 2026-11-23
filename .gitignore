@@ -1,0 +1,21 @@
+﻿# Credentials and local runtime/debug data
+/config.json
+/debug/
+/log/
+*.log
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Local environments and editor settings
+.venv/
+venv/
+.env
+.env.*
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
