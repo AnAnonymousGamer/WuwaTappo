@@ -59,7 +59,7 @@ BOOTSTRAP = r"""
   if (window.__TAURI_INTERNALS__?.metadata?.currentWindow?.label !== 'main')
     throw new Error('Not the WuWaTappo main window');
   const previous = window.__wuwaBackground;
-  if (previous?.version === 10) return previous.snapshot();
+  if (previous?.version === 11) return previous.snapshot();
   const prior = previous?.snapshot() || {};
   if (prior.busy) throw new Error('Wait for the current chest operation before upgrading');
   previous?.disableAutoLogin?.();
@@ -454,7 +454,8 @@ BOOTSTRAP = r"""
     const code = Number(error?.code);
     authError = Number.isFinite(code) ? code : 'request_failed';
     authFailures++;
-    if (code === 10002 || code === 10003) {
+    // Match the app's restartOverseasLoginOnAuthError classification.
+    if (code === 10002 || code === 10003 || code === 10024) {
       session = null; authState = 'waiting_user'; nextAuth = Infinity;
     } else {
       authState = 'retry_wait'; nextAuth = Date.now() + Math.min(300000, 30000 * 2 ** Math.min(4, authFailures - 1));
@@ -661,7 +662,7 @@ BOOTSTRAP = r"""
     });
     return true;
   }
-  window.__wuwaBackground = {version:10, snapshot, tick, disableAutoLogin, stopAutomation,
+  window.__wuwaBackground = {version:11, snapshot, tick, disableAutoLogin, stopAutomation,
     configureAuth, exportSession, beginPasswordLogin, beginUpdate, getItemEvents, ackItemEvents};
   return snapshot();
 })()
